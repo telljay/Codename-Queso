@@ -4,17 +4,34 @@
     <title>Project Queso</title>
     <style>
       img {
-        width: 100px;
-        border-radius: 50px;
+        width: 300px;
+        border-radius: 150px;
         float: left;
-        margin-right: 10px;
+        margin-right: 30px;
       }
-      .Cheese {
+      .Get {
         font-weight: bold;
+        font-size: 50px;
+        position: static;
+        top: 15%;
+        text-align: left;
       }
-      .E {
+      .Eat {
+        position: static;
         font-style: italic;
+        font-size: 50px;
+        width: 100%;
+        top: 5%;
+        text-align: center;
       }
+      .Love {
+        position: static;
+        font-size: 50px;
+        text-align: right;
+        top: 15%;
+      }
+      
+
     </style>
   </head>
   <body>
@@ -22,13 +39,13 @@
       src="C:\\Users\\danie\\Desktop\\Coding Projects\\HTML\\Tutorial Level\\images\\Parmagano.png"
       alt="An image of a Wheel of Parm"
     />
-    <p class="Cheese">Get Cheese</p>
-    <p class="E">Eat Cheese</p>
-    <p>Love Cheese</p>
+    <p class = "Get">Get Cheese</p>
+    <p class = "Eat">Eat Cheese</p>
+    <p class = "Love">Love Cheese</p>
     <form action="/submit" method="post">
       <label for="inputText">Enter Text:</label>
       <input type="text" id="inputText" name="textInput" />
-      <button type="submit">Submit</button>
+      <button class = "Button" type="submit">Submit</button>
     </form>
   </body>
 </html>

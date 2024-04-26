@@ -5,7 +5,7 @@ const port = 3000;
 app.use(express.urlencoded({extended : true}));
 
 app.get('/', (req,res) => {
-    res.sendFile('C:\\Users\\danie\\Desktop\\Coding Projects\\HTML\\Tutorial Level\\index.html');
+    res.sendFile('C:\\Users\\conno\\Codename-Queso\\Codename-Queso\\index.html');
 });
 
 app.post('/submit', (req,res)=>{
