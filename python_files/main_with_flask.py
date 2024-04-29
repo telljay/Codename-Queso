@@ -18,7 +18,7 @@ def simpleSearch():
         # Might alternatively use a request.form["searchInput"]
 
         # Change this to be your path
-        conn = sqlite3.connect("/mnt/c/Users/saxop/SoftwareDesign/Codename-Queso/Queso Database.db")
+        conn = sqlite3.connect("INSERT PATH HERE")
         conn.row_factory = sqlite3.Row
         
         print(f"Please enter a search: \n")
