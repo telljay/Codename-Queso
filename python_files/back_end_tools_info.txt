@@ -1,0 +1,10 @@
+If in root folder, you need to enter the command ". venv/python_files/bin/activate"
+in order to enter into the virtual environment
+
+Use the command pip install flask to install flask within the virtual environment
+
+Use the command flask --version to make sure you are working with Flask 2.2.3
+
+Using Python 3.9.2
+
+Using Postman for Testing
