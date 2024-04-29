@@ -17,7 +17,7 @@ def simpleSearch():
         searchInput = jsonPostData["userInput"]
         # Might alternatively use a request.form["searchInput"]
 
-        # Change this to be your path
+        # Change this to be your path - DO NOT PUSH THIS CHANGE
         conn = sqlite3.connect("INSERT PATH HERE")
         conn.row_factory = sqlite3.Row
         
