@@ -30,22 +30,52 @@
         text-align: right;
         top: 15%;
       }
-      
-
     </style>
   </head>
   <body>
-    <img
-      src="C:\\Users\\danie\\Desktop\\Coding Projects\\HTML\\Tutorial Level\\images\\Parmagano.png"
-      alt="An image of a Wheel of Parm"
-    />
-    <p class = "Get">Get Cheese</p>
-    <p class = "Eat">Eat Cheese</p>
-    <p class = "Love">Love Cheese</p>
-    <form action="/submit" method="post">
+    <div class="container">
+      <h1>Cheese</h1>
+      <div id="cheeseSearch">
+        <p>
+          Search For Cheese
+          <input type="text" id="inputText" name="textInput" /> Cheese:<input
+            type="radio"
+            id="Cheese"
+            name="searchChoices"
+          />
+          Vendor:<input type="radio" id="Vendor" name="searchChoices" />
+          Distributor:<input
+            type="radio"
+            id="Distributor"
+            name="searchChoices"
+          />
+          Supplier:<input type="radio" id="Supplier" name="searchChoices" />
+          Affineur:<input type="radio" id="Affineur" name="searchChoices" />
+        </p>
+        <button id="cheeseSearch">Search for Cheese</button>
+      </div>
+    </div>
+
+    <!-- <form action="/submit" method="post">
       <label for="inputText">Enter Text:</label>
       <input type="text" id="inputText" name="textInput" />
-      <button class = "Button" type="submit">Submit</button>
-    </form>
+      <button class="Button" type="submit">Submit</button>
+    </form> -->
+
+    <!-- <button id="button">Chick</button> -->
+
+    <script>
+      function getSearchChoice() {
+        console.log("This");
+        var ele = document.getElementsByName("searchChoices");
+
+        for (i = 0; i < ele.length; i++) {
+          if (ele[i].checked) {
+            document.getElementById("result").innerHTML =
+              "Gender: " + ele[i].value;
+          }
+        }
+      }
+    </script>
   </body>
 </html>
