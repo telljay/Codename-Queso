@@ -56,20 +56,6 @@
       </div>
     </div>
             
-            <!-- Cheese:<input
-              type="radio"
-              id="Cheese"
-              name="searchChoices"
-            />
-            Vendor:<input type="radio" id="Vendor" name="searchChoices" />
-            Distributor:<input
-              type="radio"
-              id="Distributor"
-              name="searchChoices"
-            />
-            Supplier:<input type="radio" id="Supplier" name="searchChoices" />
-            Affineur:<input type="radio" id="Affineur" name="searchChoices" />
-            <button type="submit">Search for Cheese</button> -->
     <script>
       function getSearchChoice() {
         const form = document.querySelector("form");
@@ -82,11 +68,14 @@
             const data = new FormData(form);
             let input = document.getElementById("inputText").value;
             let output = "";
+            //loops to check which button was clicked to get the output
             for (const entry of data) {
               output = `${output}${entry[1]}\r`;
             }
             log.innerText = output;
+            //gets the value from the radio buttons
             console.log(output);
+            //gets the text from the search bar
             console.log(input);
             event.preventDefault();
           },
