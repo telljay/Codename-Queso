@@ -1,15 +1,13 @@
 import sqlite3
 from sqlite3 import Error
-def basicSearch(conn, checkBoxResults, userInput):
-    print(f"Please enter a search: \n")
-
+def basicSearch(conn, userInput):
     basicSearch_query = """
     SELECT Name
-    FROM ?
+    FROM Cheese
     WHERE Name LIKE ? COLLATE NOCASE;
     """
     cursor = conn.cursor()
-    cursor.execute(basicSearch_query,(checkBoxResults,"%"+userInput+"%"))
+    cursor.execute(basicSearch_query,("%"+userInput+"%",))
     rows = cursor.fetchall()
     for row in rows:
         print(f"{row[0]}")
@@ -26,12 +24,11 @@ def vendorSearch(conn):
 def main():
     conn = None
     try:
-        conn = sqlite3.connect("C:/Users/toell/Desktop/Codename Queso/Queso Database.db")
+        conn = sqlite3.connect("../Queso Database.db")
         conn.row_factory = sqlite3.Row
+        userInput = input(f"Please enter the name of what you would search")
         
-
-        
-        basicSearch(conn)
+        basicSearch(conn,userInput)
 
     except Error as e:
         print(f"Error opening the database {e}")
