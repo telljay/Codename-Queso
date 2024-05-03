@@ -3,11 +3,16 @@ from sqlite3 import Error
 
 from flask import Flask
 from flask import request
+from flask import current_app
 app = Flask(__name__)
 
 @app.route("/")
 def displayWelcomeMessage():
     return f"Welcome. Welcome to Cheese."
+
+@app.route("/search")
+def searchLoad():
+    return current_app.send_static_file('index.html')
 
 @app.route("/search", methods = ["POST"])   
 def simpleSearch():

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Project Queso</title>
+    <style>
+      img {
+        width: 300px;
+        border-radius: 150px;
+        float: left;
+        margin-right: 30px;
+      }
+      .Get {
+        font-weight: bold;
+        font-size: 50px;
+        position: static;
+        top: 15%;
+        text-align: left;
+      }
+      .Eat {
+        position: static;
+        font-style: italic;
+        font-size: 50px;
+        width: 100%;
+        top: 5%;
+        text-align: center;
+      }
+      .Love {
+        position: static;
+        font-size: 50px;
+        text-align: right;
+        top: 15%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Cheese</h1>
+      <img src = "../images/Cheese slice.png" alt = "A slice of cheese" />
+      <div id="cheeseSearch">
+          <fieldset>
+            Search For Cheese <input type="text" id="inputText" name="textInput" /> 
+            <form>
+                <legend>Search Choices:</legend>
+                <div>
+                  <input type="radio" id="searchChoice1" name="searchChoices" value="cheese" />
+                  <label for="cheese">Cheese</label>
+                  <input type="radio" id="searchChoice2" name="searchChoices" value="vendor" />
+                  <label for="vendor">Vendor</label>
+                  <input type="radio" id="searchChoice3" name="searchChoices" value="distributor" />
+                  <label for="distributor">Distributor</label>
+                </div>
+                <div>
+                  <button onclick="getSearchChoice()">Submit</button>
+                </div>
+            </form>
+            <pre id="log"></pre>
+      </div>
+    </div>
+            
+    <script>
+      function getSearchChoice() {
+        const form = document.querySelector("form");
+        const log = document.querySelector("#log");
+
+        form.addEventListener(
+          "submit",
+          (event) => {
+            console.log("Clicked")
+            const data = new FormData(form);
+            let input = document.getElementById("inputText").value;
+            let output = "";
+            //loops to check which button was clicked to get the output
+            for (const entry of data) {
+              output = `${output}${entry[1]}\r`;
+            }
+            log.innerText = output;
+            //gets the value from the radio buttons
+            console.log(output);
+            //gets the text from the search bar
+            console.log(input);
+            event.preventDefault();
+          },
+          false,
+        );
+      }
+
+      // document.getElementById("cheeseSearch").addEventListener("click", async () => {
+      //       const firstName = document.getElementById("inputText").value;
+
+      //       const userSearch = {
+      //           userInput, inputText
+      //       };
+
+      //       const response = await fetch("/search", {
+      //           method: "POST",
+      //           headers: {
+      //               "Content-Type": "application/json",
+      //           },
+      //           body: JSON.stringify(userSearch) 
+      //       });
+      //       if(response.ok) {
+      //           // await loadLegends();
+      //       }
+      //   });
+    </script>
+  </body>
+</html>
