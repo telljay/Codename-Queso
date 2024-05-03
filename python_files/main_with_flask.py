@@ -17,8 +17,7 @@ def simpleSearch():
         searchInput = jsonPostData["userInput"]
         # Might alternatively use a request.form["searchInput"]
 
-        # Change this to be your path
-        conn = sqlite3.connect("INSERT PATH HERE")
+        conn = sqlite3.connect("../Queso Database.db")
         conn.row_factory = sqlite3.Row
         
         print(f"Please enter a search: \n")
