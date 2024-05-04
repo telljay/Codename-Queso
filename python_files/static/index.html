@@ -47,6 +47,12 @@
                   <label for="vendor">Vendor</label>
                   <input type="radio" id="searchChoice3" name="searchChoices" value="distributor" />
                   <label for="distributor">Distributor</label>
+                  <input type="radio" id="searchChoice4" name="searchChoices" value="supplier"/>
+                  <label for="supplier">Supplier</label>
+                  <input type="radio" id="searchChoice5" name="searchChoices" value="affineur"/>
+                  <label for="affineur">Affineur</label>
+                  <input type="radio" id="searchChoice6" name="searchChoices" value="cheesemaker"/>
+                  <label for="cheesemaker">Cheesemaker</label>
                 </div>
                 <div>
                   <button onclick="getSearchChoice()">Submit</button>
@@ -55,6 +61,8 @@
             <pre id="log"></pre>
       </div>
     </div>
+
+    <div class="searchResults"></div>
             
     <script>
       function getSearchChoice() {
@@ -64,7 +72,6 @@
         form.addEventListener(
           "submit",
           (event) => {
-            console.log("Clicked")
             const data = new FormData(form);
             let input = document.getElementById("inputText").value;
             let output = "";
@@ -82,6 +89,11 @@
           false,
         );
       }
+
+      $('searchResults').each(function(){
+        if($(this).text()=='') $(this).text('Results');
+      });
+
 
       // document.getElementById("cheeseSearch").addEventListener("click", async () => {
       //       const firstName = document.getElementById("inputText").value;
