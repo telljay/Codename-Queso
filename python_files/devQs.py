@@ -1,24 +1,26 @@
 import sqlite3
 from sqlite3 import Error
-def basicSearch(conn, userInput):
-    basicSearch_query = """
-    SELECT Name
-    FROM Cheese
-    WHERE Name LIKE ? COLLATE NOCASE;
-    """
+def cheeseSearch(conn, boxResults,userInput):
+    keyValuePairs = ["Cheese","Vendor","Supplier","Distributor","Affineur","CheeseMaker"]
+    if(boxResults <=3):
+        sql = f"""
+        SELECT Name
+        FROM {keyValuePairs[boxResults]}
+        WHERE Name LIKE ? COLLATE NOCASE
+        ORDER BY Name
+        """
+    else:
+        sql = f"""
+        SELECT last,first
+        FROM {keyValuePairs[boxResults]}
+        WHERE last LIKE ? COLLATE NOCASE
+        ORDER BY last,first
+        """
     cursor = conn.cursor()
-    cursor.execute(basicSearch_query,("%"+userInput+"%",))
+    cursor.execute(sql,("%"+userInput+"%",))
     rows = cursor.fetchall()
     for row in rows:
         print(f"{row[0]}")
-
-    
-def vendorSearch(conn):
-    vendorSearch_query = """
-    SELECT Name
-    FROM Vendor
-    WHERE Name = ?
-    """
 
 
 def main():
@@ -26,9 +28,17 @@ def main():
     try:
         conn = sqlite3.connect("../Queso Database.db")
         conn.row_factory = sqlite3.Row
-        userInput = input(f"Please enter the name of what you would search")
-        
-        basicSearch(conn,userInput)
+        checkBox = input ("""Would you like to search for:
+                          1. Cheese
+                          2. Vendor
+                          3. Supplier
+                          4. Distributor
+                          5. Affineur
+                          6. Cheese Maker
+                          """)
+        userInput = input(f"Please enter the name of what you would search: \n")
+        checkBox= int(checkBox)-1
+        cheeseSearch(conn,checkBox,userInput)
 
     except Error as e:
         print(f"Error opening the database {e}")
