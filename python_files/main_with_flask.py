@@ -1,6 +1,8 @@
 import sqlite3
 from sqlite3 import Error
 
+import sys
+
 from flask import Flask
 from flask import request
 from flask import current_app
@@ -20,13 +22,13 @@ def simpleSearch():
     try:
         jsonPostData = request.get_json()
         searchInput = jsonPostData["userInput"]
-        # Might alternatively use a request.form["searchInput"]
+        buttonChoice = jsonPostData["userButton"]
+        
+        print(buttonChoice, file=sys.stderr)
+        print(searchInput, file=sys.stderr)
 
         conn = sqlite3.connect("../Queso Database.db")
         conn.row_factory = sqlite3.Row
-        
-        print(f"Please enter a search: \n")
-        word = searchInput
         basicSearch_query = """
         SELECT Name
         FROM Cheese
@@ -35,15 +37,16 @@ def simpleSearch():
         
         results = []
         cursor = conn.cursor()
-        cursor.execute(basicSearch_query,("%"+word+"%",))
+        cursor.execute(basicSearch_query,("%"+searchInput+"%",))
         rows = cursor.fetchall()
         for row in rows :
             row_dict = {"Name": row[0]}
             results.append(row_dict)
-        return results
+        print(results, file=sys.stderr)
 
     except Error as e:
         print(f"Error opening the database {e}")
     finally:
         if conn:
             conn.close()
+    return {"results": results}
