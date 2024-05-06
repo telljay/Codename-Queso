@@ -58,7 +58,10 @@ def simpleSearch():
         print(buttonChoice, file=sys.stderr)
         print(searchInput, file=sys.stderr)
 
-        if buttonChoice is "Affineur":
+        results = []
+        conn = sqlite3.connect("./Queso Database.db")
+        conn.row_factory = sqlite3.Row
+        if buttonChoice == "Affineur":
             sql = f"""
             SELECT last,first
             FROM {buttonChoice}
@@ -71,6 +74,7 @@ def simpleSearch():
             for row in rows:
                 results = f"{row[0]}, {row[1]}"
                 print(results,file=sys.stderr)
+        
         else:
             sql = f"""
             SELECT Name
@@ -84,6 +88,7 @@ def simpleSearch():
             for row in rows:
                 results = row[0]
                 print(results,file=sys.stderr)
+
 
     except Error as e:
         print(f"Error opening the database {e}")
