@@ -58,37 +58,22 @@ def simpleSearch():
         print(buttonChoice, file=sys.stderr)
         print(searchInput, file=sys.stderr)
 
-        results = []
         conn = sqlite3.connect("./Queso Database.db")
         conn.row_factory = sqlite3.Row
-        if buttonChoice == "Affineur":
-            sql = f"""
-            SELECT last,first
-            FROM {buttonChoice}
-            WHERE last LIKE ? COLLATE NOCASE
-            ORDER BY last,first
-            """
-            cursor = conn.cursor()
-            cursor.execute(sql,("%"+searchInput+"%",))
-            rows = cursor.fetchall() 
-            for row in rows:
-                results = f"{row[0]}, {row[1]}"
-                print(results,file=sys.stderr)
+        basicSearch_query = """
+        SELECT Name
+        FROM Cheese
+        WHERE Name LIKE ? COLLATE NOCASE;
+        """
         
-        else:
-            sql = f"""
-            SELECT Name
-            FROM {buttonChoice}
-            WHERE Name LIKE ? COLLATE NOCASE
-            ORDER BY Name
-            """
-            cursor = conn.cursor()
-            cursor.execute(sql,("%"+searchInput+"%",))
-            rows = cursor.fetchall()
-            for row in rows:
-                results = row[0]
-                print(results,file=sys.stderr)
-
+        results = []
+        cursor = conn.cursor()
+        cursor.execute(basicSearch_query,("%"+searchInput+"%",))
+        rows = cursor.fetchall()
+        for row in rows :
+            row_dict = {"Name": row[0]}
+            results.append(row_dict)
+        print(results, file=sys.stderr)
 
     except Error as e:
         print(f"Error opening the database {e}")

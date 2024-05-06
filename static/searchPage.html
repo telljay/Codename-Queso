@@ -57,7 +57,7 @@
                   <label for="cheesemaker">Cheesemaker</label>
                 </div>
                 <div>
-                  <button onclick="getSearchChoice()">Submit</button>
+                  <button onclick="processSearch()">Submit</button>
                 </div>
             </form>
             <pre id="log"></pre>
@@ -67,54 +67,51 @@
     <div class="searchResults"></div>
             
     <script>
-      async function getSearchChoice() {
+
+      async function processSearch() {
       const form = document.querySelector("form");
       const log = document.querySelector("#log");
+      // console.log("Before event listener");
 
-      form.addEventListener(
-        "submit",
-        async (event) => {
+        // console.log("First line of event listener");
+        // console.log("Clicked");
+        const data = new FormData(form);
+        const userInput = document.getElementById("inputText").value;
+        let categoryButtonSelected = "";
+        for (const entry of data) {
+          categoryButtonSelected = `${categoryButtonSelected}${entry[1]}\r`;
+        }
+        // log.innerText = categoryButtonSelected;
+        event.preventDefault();
 
-          console.log("Clicked")
-          const data = new FormData(form);
-          const userInput = document.getElementById("inputText").value;
-          let categoryButtonSelected = "";
-          for (const entry of data) {
-            categoryButtonSelected = `${categoryButtonSelected}${entry[1]}\r`;
+        const userSearch = {
+            userInput: userInput,
+            userButton: categoryButtonSelected
+        };
+
+        const response = await fetch("/search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userSearch)
+        });
+        // console.log("Before the if")
+        if(response.ok) {
+          const responseJSON = await response.json();
+          const results = responseJSON.results;
+          // console.log("The button selected was:");
+          // console.log(categoryButtonSelected);
+          // console.log("The user's search was:");
+          // console.log(userInput);
+          if(results.length == 0) {
+            console.log("No results");
+          } else {
+            for(let i = 0; i < results.length; i++) {
+              console.log(results[i].Name);
+            }
           }
-          log.innerText = categoryButtonSelected;
-          event.preventDefault();
-
-          const userSearch = {
-              userInput: userInput,
-              userButton: categoryButtonSelected
-          };
-
-          const response = await fetch("/search", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json",
-              },
-              body: JSON.stringify(userSearch)
-          });
-          if(response.ok) {
-              const responseJSON = await response.json();
-              const results = responseJSON.results;
-              console.log("The button selected was:");
-              console.log(categoryButtonSelected)
-              console.log("The user's search was:")
-              console.log(userInput);
-              if(results.length == 0) {
-                console.log("No results");
-              } else {
-                for(let i = 0; i < results.length; i++) {
-                  console.log(results[i].Name);
-                }
-              }
-          } 
-        },
-          false,
-        );
+        }
       }
 
       //CURRENTLY BROKEN
