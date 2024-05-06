@@ -23,9 +23,9 @@ def searchLoad():
 #         entity = []
 #         conn = sqlite3.connect("../Queso Database.db")
 #         conn.row_factory = sqlite3.Row
-#         if entityType = "Cheese":
+#         if entityType == "Cheese":
 #             query = """
-#             SELECT *
+#             SELECT Name
 #             FROM Cheese
 #             WHERE Id = ?;
 #             """
@@ -36,7 +36,9 @@ def searchLoad():
 #             # TODO ADD OTHER QUALITIES
 #             results = {"Name": row[0], "OTHER QUALITIES": row[1]}
 #             print(results, file=sys.stderr)
+                
 #         #TODO ADD OTHER IFS
+        
 
 #     except Error as e:
 #         print(f"Error opening the database {e}")
@@ -54,17 +56,26 @@ def simpleSearch():
         jsonPostData = request.get_json()
         searchInput = jsonPostData["userInput"]
         buttonChoice = jsonPostData["userButton"]
-        
+        buttonChoice.capitalize()
+
         print(buttonChoice, file=sys.stderr)
         print(searchInput, file=sys.stderr)
-
         conn = sqlite3.connect("./Queso Database.db")
         conn.row_factory = sqlite3.Row
-        basicSearch_query = """
-        SELECT Name
-        FROM Cheese
-        WHERE Name LIKE ? COLLATE NOCASE;
-        """
+        ##----        
+        if buttonChoice.startswith('a'):
+            sql = f"""
+            SELECT last,first
+            FROM {buttonChoice}
+            WHERE last LIKE ? COLLATE NOCASE
+            ORDER BY last,first
+            """
+            cursor = conn.cursor()
+            cursor.execute(sql,("%"+searchInput+"%",))
+            rows = cursor.fetchall() 
+            for row in rows:
+                results = f"{row[0]}, {row[1]}"
+                print(results,file=sys.stderr)
         
         results = []
         cursor = conn.cursor()
@@ -75,6 +86,7 @@ def simpleSearch():
             results.append(row_dict)
         print(results, file=sys.stderr)
 
+        ##----
     except Error as e:
         print(f"Error opening the database {e}")
     finally:
