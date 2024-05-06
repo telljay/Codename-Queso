@@ -1,8 +1,8 @@
 import sqlite3
 from sqlite3 import Error
 def cheeseSearch(conn, boxResults,userInput):
-    keyValuePairs = ["Cheese","Vendor","Supplier","Distributor","Affineur","CheeseMaker"]
-    if(boxResults <=3):
+    keyValuePairs = ["Cheese","Vendor","Supplier","Distributor","CheeseMaker","Affineur"]
+    if(boxResults <= 4):
         sql = f"""
         SELECT Name
         FROM {keyValuePairs[boxResults]}
@@ -21,6 +21,9 @@ def cheeseSearch(conn, boxResults,userInput):
     rows = cursor.fetchall()
     for row in rows:
         print(f"{row[0]}")
+        
+
+
 
 
 def main():
@@ -33,8 +36,8 @@ def main():
                           2. Vendor
                           3. Supplier
                           4. Distributor
-                          5. Affineur
-                          6. Cheese Maker
+                          5. Cheese Maker
+                          6. Affineur
                           """)
         userInput = input(f"Please enter the name of what you would search: \n")
         checkBox= int(checkBox)-1
