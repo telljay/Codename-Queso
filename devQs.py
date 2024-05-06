@@ -9,6 +9,13 @@ def cheeseSearch(conn, boxResults,userInput):
         WHERE Name LIKE ? COLLATE NOCASE
         ORDER BY Name
         """
+        cursor = conn.cursor()
+        cursor.execute(sql,("%"+userInput+"%",))
+        rows = cursor.fetchall()
+        for row in rows:
+            results = row[0]
+            
+            print(results)
     else:
         sql = f"""
         SELECT last,first
@@ -16,11 +23,12 @@ def cheeseSearch(conn, boxResults,userInput):
         WHERE last LIKE ? COLLATE NOCASE
         ORDER BY last,first
         """
-    cursor = conn.cursor()
-    cursor.execute(sql,("%"+userInput+"%",))
-    rows = cursor.fetchall()
-    for row in rows:
-        print(f"{row[0]}")
+        cursor = conn.cursor()
+        cursor.execute(sql,("%"+userInput+"%",))
+        rows = cursor.fetchall() 
+        for row in rows:
+            results = f"{row[0]}, {row[1]}"  
+            print(results)
         
 
 
