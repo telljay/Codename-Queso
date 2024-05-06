@@ -16,6 +16,36 @@ def displayWelcomeMessage():
 def searchLoad():
     return current_app.send_static_file('index.html')
 
+@app.route("/search/<entityType>/<entityId>")
+def getEntity(entityType, entityId):
+    conn = None
+    try:
+        entity = []
+        conn = sqlite3.connect("../Queso Database.db")
+        conn.row_factory = sqlite3.Row
+        if entityType = "Cheese":
+            query = """
+            SELECT Name
+            FROM Cheese
+            WHERE Id = ?;
+            """
+            
+            cursor = conn.cursor()
+            cursor.execute(query, entityId)
+            row = cursor.fetchone()
+            # TODO ADD OTHER QUALITIES
+            results = {"Name": row[0], "OTHER QUALITIES": row[1]}
+            print(results, file=sys.stderr)
+        #TODO ADD OTHER IFS
+
+    except Error as e:
+        print(f"Error opening the database {e}")
+    finally:
+        if conn:
+            conn.close()
+    #TODO HANDLE EMPTY RESULTS AS NOT FOUND IN HTML SCRIPT
+    return {"results": results}
+
 @app.route("/search", methods = ["POST"])   
 def simpleSearch():
     conn = None
