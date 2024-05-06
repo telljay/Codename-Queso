@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Project Queso</title>
+    <style>
+      img {
+        width: 300px;
+        border-radius: 150px;
+        float: left;
+        margin-right: 30px;
+      }
+      .Get {
+        font-weight: bold;
+        font-size: 50px;
+        position: static;
+        top: 15%;
+        text-align: left;
+      }
+      .Eat {
+        position: static;
+        font-style: italic;
+        font-size: 50px;
+        width: 100%;
+        top: 5%;
+        text-align: center;
+      }
+      .Love {
+        position: static;
+        font-size: 50px;
+        text-align: right;
+        top: 15%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Cheese</h1>
+      <!-- CURRENTLY BROKEN -->
+      <!-- <img src = "../images/Cheese_slice.png" alt = "A slice of cheese" /> -->
+      <div id="cheeseSearch">
+          <fieldset>
+            Search For Cheese <input type="text" id="inputText" name="textInput" /> 
+            <form>
+                <legend>Search Choices:</legend>
+                <div>
+                  <input type="radio" id="searchChoice1" name="searchChoices" value="cheese" />
+                  <label for="cheese">Cheese</label>
+                  <input type="radio" id="searchChoice2" name="searchChoices" value="vendor" />
+                  <label for="vendor">Vendor</label>
+                  <input type="radio" id="searchChoice3" name="searchChoices" value="distributor" />
+                  <label for="distributor">Distributor</label>
+                  <input type="radio" id="searchChoice4" name="searchChoices" value="supplier"/>
+                  <label for="supplier">Supplier</label>
+                  <input type="radio" id="searchChoice5" name="searchChoices" value="affineur"/>
+                  <label for="affineur">Affineur</label>
+                  <input type="radio" id="searchChoice6" name="searchChoices" value="cheesemaker"/>
+                  <label for="cheesemaker">Cheesemaker</label>
+                </div>
+                <div>
+                  <button onclick="getSearchChoice()">Submit</button>
+                </div>
+            </form>
+            <pre id="log"></pre>
+      </div>
+    </div>
+
+    <div class="searchResults"></div>
+            
+    <script>
+      async function getSearchChoice() {
+      const form = document.querySelector("form");
+      const log = document.querySelector("#log");
+
+      form.addEventListener(
+        "submit",
+        async (event) => {
+
+          console.log("Clicked")
+          const data = new FormData(form);
+          const userInput = document.getElementById("inputText").value;
+          let categoryButtonSelected = "";
+          for (const entry of data) {
+            categoryButtonSelected = `${categoryButtonSelected}${entry[1]}\r`;
+          }
+          log.innerText = categoryButtonSelected;
+          event.preventDefault();
+
+          const userSearch = {
+              userInput: userInput,
+              userButton: categoryButtonSelected
+          };
+
+          const response = await fetch("/search", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify(userSearch)
+          });
+          if(response.ok) {
+              const responseJSON = await response.json();
+              const results = responseJSON.results;
+              console.log("The button selected was:");
+              console.log(categoryButtonSelected)
+              console.log("The user's search was:")
+              console.log(userInput);
+              //Currently doesn't seem to do much
+              if(results.length == 0) {
+                console.log("No results");
+              } else {
+                for(let i = 0; i < results.length; i++) {
+                  console.log(results[i].Name);
+                }
+              }
+          } 
+        },
+          false,
+        );
+      }
+
+      //CURRENTLY BROKEN
+      // $('searchResults').each(function(){
+      //   if($(this).text()=='') $(this).text('Results');
+      // });
+
+
+      // document.getElementById("cheeseSearch").addEventListener("click", async () => {
+      //       const firstName = document.getElementById("inputText").value;
+
+      //       const userSearch = {
+      //           userInput, inputText
+      //       };
+
+      //       const response = await fetch("/search", {
+      //           method: "POST",
+      //           headers: {
+      //               "Content-Type": "application/json",
+      //           },
+      //           body: JSON.stringify(userSearch) 
+      //       });
+      //       if(response.ok) {
+      //           // await loadLegends();
+      //       }
+      //   });
+    </script>
+  </body>
+</html>

@@ -14,7 +14,7 @@ def displayWelcomeMessage():
 
 @app.route("/search")
 def searchLoad():
-    return current_app.send_static_file('index.html')
+    return current_app.send_static_file('searchPage.html')
 
 # @app.route("/search/<entityType>/<entityId>")
 # def getEntity(entityType, entityId):
@@ -45,7 +45,8 @@ def searchLoad():
 #     finally:
 #         if conn:
 #             conn.close()
-#     #TODO HANDLE EMPTY RESULTS AS NOT FOUND IN HTML SCRIPT
+#     if not results:
+        # abort(404)
 #     return {"results": results}
 
 @app.route("/search", methods = ["POST"])   
@@ -71,10 +72,11 @@ def simpleSearch():
             """
             cursor = conn.cursor()
             cursor.execute(sql,("%"+searchInput+"%",))
-            rows = cursor.fetchall()
+            rows = cursor.fetchall() 
             for row in rows:
-                results = f"{row[0]}, {row[1]}" 
-                print(results, file=sys.stderr) 
+                results = f"{row[0]}, {row[1]}"
+                print(results,file=sys.stderr)
+        
         else:
             sql = f"""
             SELECT Name
@@ -87,7 +89,8 @@ def simpleSearch():
             rows = cursor.fetchall()
             for row in rows:
                 results = row[0]
-                print(results, file=sys.stderr)
+                print(results,file=sys.stderr)
+
 
         ##----
     except Error as e:
