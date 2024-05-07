@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <div class="searchResults"></div>
+    <div id="searchResultsHolder"></div>
             
     <script>
 
@@ -108,8 +108,20 @@
           } else {
             // console.log( "Made it into the else");
             for(let i = 0; i < results.length; i++) {
-              // console.log("Made it into for loop" + i);
+              console.log("Made it into for loop" + i);
               console.log(results[i].Name);
+              const searchResultsHolder = document.getElementById("searchResultsHolder");
+              searchResultsHolder.innerHTML = "";
+
+              const resultsList = document.createElement("ul");
+              for(let i = 0;i < results.length;i++) {
+                  const resultsListItem = document.createElement("result");
+                  resultsListItem.setAttribute("id", results[i].id);
+                  resultsListItem.innerHTML = `${results[i].Name}`
+                  searchResultsHolder.append(resultsListItem);
+                  // TODO: Put results on different lines spaced out
+                  // searchResultsHolder.append("\n");
+              }
             }
           }
         }
