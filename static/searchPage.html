@@ -69,19 +69,17 @@
     <script>
 
       async function processSearch() {
-      const form = document.querySelector("form");
-      const log = document.querySelector("#log");
-      // console.log("Before event listener");
-
-        // console.log("First line of event listener");
-        // console.log("Clicked");
+        console.log("Clicked");
+        
+        const form = document.querySelector("form");
         const data = new FormData(form);
         const userInput = document.getElementById("inputText").value;
         let categoryButtonSelected = "";
         for (const entry of data) {
           categoryButtonSelected = `${categoryButtonSelected}${entry[1]}\r`;
         }
-        // log.innerText = categoryButtonSelected;
+        const log = document.querySelector("#log");
+        log.innerText = categoryButtonSelected;
         event.preventDefault();
 
         const userSearch = {
@@ -98,16 +96,19 @@
         });
         // console.log("Before the if")
         if(response.ok) {
+          // console.log("In the if")
           const responseJSON = await response.json();
           const results = responseJSON.results;
-          // console.log("The button selected was:");
-          // console.log(categoryButtonSelected);
-          // console.log("The user's search was:");
-          // console.log(userInput);
+          console.log("The button selected was:");
+          console.log(categoryButtonSelected);
+          console.log("The user's search was:");
+          console.log(userInput);
           if(results.length == 0) {
             console.log("No results");
           } else {
+            // console.log( "Made it into the else");
             for(let i = 0; i < results.length; i++) {
+              // console.log("Made it into for loop" + i);
               console.log(results[i].Name);
             }
           }

@@ -62,31 +62,39 @@ def simpleSearch():
         print(searchInput, file=sys.stderr)
         conn = sqlite3.connect("./Queso Database.db")
         conn.row_factory = sqlite3.Row
-        ##----        
+        results = []
+        
         if buttonChoice.startswith('a'):
             sql = f"""
-            SELECT last,first
+            SELECT last, first
             FROM {buttonChoice}
             WHERE last LIKE ? COLLATE NOCASE
-            ORDER BY last,first
+            ORDER BY last, first
             """
             cursor = conn.cursor()
             cursor.execute(sql,("%"+searchInput+"%",))
             rows = cursor.fetchall() 
             for row in rows:
-                results = f"{row[0]}, {row[1]}"
-                print(results,file=sys.stderr)
+                # TODO consider if this is how we want this
+                result = {"Name": row[0], "firstName": row[1]}
+                results.append(result)
+                print(result, file=sys.stderr)
         
-        results = []
-        cursor = conn.cursor()
-        cursor.execute(basicSearch_query,("%"+searchInput+"%",))
-        rows = cursor.fetchall()
-        for row in rows :
-            row_dict = {"Name": row[0]}
-            results.append(row_dict)
-        print(results, file=sys.stderr)
+        else:
+            sql = f"""
+            SELECT Name
+            FROM {buttonChoice}
+            WHERE Name LIKE ? COLLATE NOCASE
+            ORDER BY Name
+            """
+            cursor = conn.cursor()
+            cursor.execute(sql,("%"+searchInput+"%",))
+            rows = cursor.fetchall()
+            for row in rows:
+                result = {"Name": row[0]}
+                results.append(result)
+                print(result,file=sys.stderr)
 
-        ##----
     except Error as e:
         print(f"Error opening the database {e}")
     finally:
