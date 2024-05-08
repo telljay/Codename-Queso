@@ -34,7 +34,7 @@ def simpleSearch():
         
         if buttonChoice.startswith('a'):
             sql = f"""
-            SELECT last, first
+            SELECT last, first, ID
             FROM {buttonChoice}
             WHERE last LIKE ? COLLATE NOCASE
             ORDER BY last, first
@@ -51,7 +51,7 @@ def simpleSearch():
         else:
             # TODO Update different tables to have general "id" PK
             sql = f"""
-            SELECT Name, CheeseID
+            SELECT Name, ID
             FROM {buttonChoice}
             WHERE Name LIKE ? COLLATE NOCASE
             ORDER BY Name
@@ -88,7 +88,7 @@ def getEntity(entityType, entityId):
             query = """
             SELECT Name
             FROM Cheese
-            WHERE CheeseID = ?;
+            WHERE ID = ?;
             """
             
             cursor = conn.cursor()
