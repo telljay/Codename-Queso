@@ -70,7 +70,7 @@
 
       async function processSearch() {
         console.log("Clicked");
-        
+        document.getElementById("searchResultsHolder").innerHTML = "";
         const form = document.querySelector("form");
         const data = new FormData(form);
         const userInput = document.getElementById("inputText").value;
@@ -78,8 +78,8 @@
         for (const entry of data) {
           categoryButtonSelected = `${categoryButtonSelected}${entry[1]}\r`;
         }
-        const log = document.querySelector("#log");
-        log.innerText = categoryButtonSelected;
+        // const log = document.querySelector("#log");
+        // log.innerText = categoryButtonSelected;
         event.preventDefault();
 
         const userSearch = {
@@ -118,7 +118,16 @@
               resultsListItem.innerHTML = `${results[i].Name}`
               resultsListItem.setAttribute("id", results[i].Id);
               resultsListItem.addEventListener("click", async () => {
-                const response = await fetch("/search/" + resultsCategory + resultsId)
+                const form = document.querySelector("form");
+                const data = new FormData(form);
+                const userInput = document.getElementById("inputText").value;
+                let categoryButtonSelected = "";
+                for (const entry of data) {
+                  categoryButtonSelected = `${categoryButtonSelected}${entry[1]}\r`;
+                }
+                newUrl = window.location.href + "/" + categoryButtonSelected + "/" + resultsListItem.getAttribute("id");
+                console.log(newUrl);
+                window.location.href = newUrl;
                 });
               searchResultsHolder.append(resultsListItem);
                   // TODO: Put results on different lines spaced out
