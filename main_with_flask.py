@@ -74,9 +74,10 @@ def simpleSearch():
 
 
 @app.route("/search/<entityType>/<entityId>")
-# def loadPage()
-#     return current_app.send_static_file('individualPage.html')
+def loadPage(entityType, entityId):
+    return current_app.send_static_file('individualPage.html')
 
+@app.route("/search/<entityType>/<entityId>", methods = ["POST"])
 def getEntity(entityType, entityId):
     conn = None
     try:
