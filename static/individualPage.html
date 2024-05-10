@@ -150,6 +150,25 @@
         infoList.append(website);
 
         infoPanel.append(infoList);
+
+        const cheesesList = document.createElement("ul");
+        const cheesesHeader = document.createElement("h4");
+        cheesesHeader.innerHTML = "Cheeses sold by this vendor:";
+        cheesesList.append(cheesesHeader);
+        for(let i = 0; i < entity.Cheeses.length; i++) {
+          const cheeses = document.createElement("ul");
+          const singleCheese = document.createElement("button");
+          cheeseId = `${entity.Cheeses[i].Id}`
+          singleCheese.innerHTML = `${entity.Cheeses[i].Name}`
+          singleCheese.setAttribute("id", entity.Cheeses[i].Id);
+          singleCheese.addEventListener("click", async () => {
+            newUrl = "/search/cheese/" + singleCheese.getAttribute("id");
+            window.location.href = newUrl;
+            });
+          cheeses.append(singleCheese);
+          cheesesList.append(cheeses);
+        }
+        infoPanel.append(cheesesList);
       }
 
       function loadDistributor(entity) {

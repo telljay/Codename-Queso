@@ -124,7 +124,23 @@ def getEntity(entityType, entityId):
             row = cursor.fetchone() 
             entity = {"Name": row[0], "AddressLine": row[1], "City": row[2],
             "State": row[3], "Zip": row[4], "Country": row[5], "PhoneNum": row[6],
-            "OpenYear": row[7], "Website": row[8]}
+            "OpenYear": row[7], "Website": row[8], "Cheeses": []}
+
+            sql = f"""
+            SELECT Cheese.Name, Cheese.ID
+            FROM Cheese INNER JOIN CheeseHasSuppliers ON Cheese.ID = CheeseHasSuppliers.CheeseID 
+            INNER JOIN SuppliersHaveDistributors ON CheeseHasSuppliers.SupplierID = SuppliersHaveDistributors.SupplierID 
+            INNER JOIN DistributorsSupplyVendors ON SuppliersHaveDistributors.DistributorID = DistributorsSupplyVendors.DistributorID
+            INNER JOIN Vendor ON DistributorsSupplyVendors.VendorID = Vendor.ID
+            WHERE Vendor.ID = ?
+            """
+            cursor = conn.cursor()
+            cursor.execute(sql, (entityId,))
+            rows = cursor.fetchall() 
+            for row in rows:
+                cheese = {"Name": row[0], "Id": row[1]}
+                entity['Cheeses'].append(cheese)
+                print(cheese['Name'] + " ", cheese['Id'], file=sys.stderr)
 
         elif entityType == "distributor":
             sql = f"""
