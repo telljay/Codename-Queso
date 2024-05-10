@@ -31,6 +31,40 @@ def cheeseSearch(conn, boxResults,userInput):
             print(results)
         
 
+def getEntity(entityType, entityId):
+    conn = None
+    try:
+        print("Got into individual route")
+        entity = []
+        conn = sqlite3.connect("./Queso Database.db")
+        conn.row_factory = sqlite3.Row
+        if entityType == "cheese":
+            query = """
+            SELECT *
+            FROM Cheese
+            WHERE ID = ?;
+            """
+            
+            cursor = conn.cursor()
+            cursor.execute(query, entityId)
+            rows = cursor.fetchone()
+            # TODO ADD OTHER QUALITIES
+            for row in rows:
+                entity += {row}
+            print(entity)
+                
+        #TODO ADD OTHER IFS
+        
+
+    except Error as e:
+        print(f"Error opening the database {e}")
+    finally:
+        if conn:
+            conn.close()
+    if not entity:
+        print("Got into abort")
+        ##abort(404)
+    return {"entity": entity}
 
 
 
@@ -39,17 +73,10 @@ def main():
     try:
         conn = sqlite3.connect("../Queso Database.db")
         conn.row_factory = sqlite3.Row
-        checkBox = input ("""Would you like to search for:
-                          1. Cheese
-                          2. Vendor
-                          3. Supplier
-                          4. Distributor
-                          5. Cheese Maker
-                          6. Affineur
-                          """)
-        userInput = input(f"Please enter the name of what you would search: \n")
-        checkBox= int(checkBox)-1
-        cheeseSearch(conn,checkBox,userInput)
+        checkBox = "cheese"
+        userInput = input(f"Please enter the Id of what you would search: \n")
+        ##checkBox= int(checkBox)-1
+        getEntity(checkBox,userInput)
 
     except Error as e:
         print(f"Error opening the database {e}")
