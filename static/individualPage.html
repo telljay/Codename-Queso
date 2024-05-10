@@ -107,6 +107,9 @@
         infoPanel.append(infoList);
 
         const vendorsList = document.createElement("ul");
+        const vendorsHeader = document.createElement("h4");
+        vendorsHeader.innerHTML = "Vendors which sell this cheese:";
+        vendorsList.append(vendorsHeader);
         for(let i = 0; i < entity.Vendors.length; i++) {
           console.log(entity.Vendors[i].Name, entity.Vendors[i].Id);
           const vendors = document.createElement("ul");
