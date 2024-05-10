@@ -97,21 +97,21 @@ def getEntity(entityType, entityId):
             entity = {"Name": row[0], "Sharpness": row[1], "Age": row[2],
             "Lactose": row[3], "Description": row[4], "CheeseFamily": row[5], "Vendors": []}
 
-            # sql = f"""
-            # SELECT Vendor.Name, Vendor.ID
-            # FROM Cheese INNER JOIN CheeseHasSuppliers ON Cheese.ID = CheeseHasSuppliers.CheeseID, 
-            # CheeseHasSuppliers INNER JOIN SuppliersHaveDistributors ON CheeseHasSuppliers.SupplierID = SuppliersHaveDistributors.SupplierID, 
-            # SuppliersHaveDistributors INNER JOIN DistributorsSupplyVendors ON SuppliersHaveDistributors.DistributorID = DistributorsSupplyVendors.DistributorID, 
-            # DistributorsSupplyVendors INNER JOIN Vendor ON DistributorsSupplyVendors.VendorID = Vendor.ID
-            # WHERE Cheese.ID = ?
-            # """
-            # cursor = conn.cursor()
-            # cursor.execute(sql, (entityId,))
-            # rows = cursor.fetchall() 
-            # for row in rows:
-            #     result = {"Name": row[0], "Id": row[1]}
-            #     entity['Vendors'].append(result)
-            #     print(result, file=sys.stderr)
+            sql = f"""
+            SELECT Vendor.Name, Vendor.ID
+            FROM Cheese INNER JOIN CheeseHasSuppliers ON Cheese.ID = CheeseHasSuppliers.CheeseID 
+            INNER JOIN SuppliersHaveDistributors ON CheeseHasSuppliers.SupplierID = SuppliersHaveDistributors.SupplierID 
+            INNER JOIN DistributorsSupplyVendors ON SuppliersHaveDistributors.DistributorID = DistributorsSupplyVendors.DistributorID
+            INNER JOIN Vendor ON DistributorsSupplyVendors.VendorID = Vendor.ID
+            WHERE Cheese.ID = ?
+            """
+            cursor = conn.cursor()
+            cursor.execute(sql, (entityId,))
+            rows = cursor.fetchall() 
+            for row in rows:
+                vendor = {"Name": row[0], "Id": row[1]}
+                entity['Vendors'].append(vendor)
+                print(vendor['Name'] + " ", vendor['Id'], file=sys.stderr)
 
         elif entityType == "vendor":
             sql = f"""
