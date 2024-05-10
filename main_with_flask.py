@@ -43,13 +43,11 @@ def simpleSearch():
             cursor.execute(sql,("%"+searchInput+"%",))
             rows = cursor.fetchall() 
             for row in rows:
-                # TODO consider if this is how we want this
-                result = {"Name": row[0], "firstName": row[1], "Id": row[2]}
+                result = {"Name": row[1] + " " + row[0], "Id": row[2]}
                 results.append(result)
                 print(result, file=sys.stderr)
         
         else:
-            # TODO Update different tables to have general "id" PK
             sql = f"""
             SELECT Name, ID
             FROM {buttonChoice}
@@ -73,34 +71,43 @@ def simpleSearch():
 
 
 
-@app.route("/search/<entityType>/<entityId>")
+@app.route("/search/<entityType>/<int:entityId>")
 def loadPage(entityType, entityId):
     return current_app.send_static_file('individualPage.html')
 
-@app.route("/search/<entityType>/<entityId>", methods = ["POST"])
+@app.route("/search/<entityType>/<int:entityId>", methods = ["POST"])
 def getEntity(entityType, entityId):
     conn = None
     try:
         print("Got into individual route", file=sys.stderr)
-        entity = []
         conn = sqlite3.connect("./Queso Database.db")
         conn.row_factory = sqlite3.Row
-        if entityType == "cheese":
-            query = """
-            SELECT Name
-            FROM Cheese
-            WHERE ID = ?;
+        entityType.capitalize()
+        entity = []
+        
+        if entityType.startswith('a'):
+            sql = f"""
+            SELECT last, first
+            FROM {entityType}
+            WHERE ID = ?
             """
-            
             cursor = conn.cursor()
-            cursor.execute(query, entityId)
+            cursor.execute(sql, (entityId,))
+            row = cursor.fetchone() 
+            entity = {"Name": row[1] + " " + row[0]}
+        
+        else:
+            sql = f"""
+            SELECT Name
+            FROM {entityType}
+            WHERE ID = ?
+            """
+            cursor = conn.cursor()
+            cursor.execute(sql, (entityId))
             row = cursor.fetchone()
-            # TODO ADD OTHER QUALITIES
             entity = {"Name": row[0]}
-            print(entity, file=sys.stderr)
                 
         #TODO ADD OTHER IFS
-        
 
     except Error as e:
         print(f"Error opening the database {e}")
@@ -110,4 +117,8 @@ def getEntity(entityType, entityId):
     if not entity:
         print("Got into abort", file=sys.stderr)
         abort(404)
+    print(entity, file=sys.stderr)
     return {"entity": entity}
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8080)

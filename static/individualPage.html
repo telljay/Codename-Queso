@@ -32,34 +32,34 @@
       }
     </style>
   </head>
-  <body>
+  <body onload="updateHeader()">
     <div class="container">
-      <h1>Cheese</h1>
+      <h1 id="entityHeader" innerHTML=""></h1>
+        <p onload="updateHeader();">
+          This is text.
+        </p>
       <!-- CURRENTLY BROKEN -->
       <!-- <img src = "../images/Cheese_slice.png" alt = "A slice of cheese" /> -->
-      <div id="cheeseSearch">
-          <fieldset>
-            Search For Cheese <input type="text" id="inputText" name="textInput" /> 
-            <form>
-                <legend>Search Choices:</legend>
-                <div>
-                  <button onclick="getSearchChoice()">Submit</button>
-                </div>
-            </form>
-            <pre id="log"></pre>
-      </div>
     </div>
 
     <div class="searchResults"></div>
             
     <script>
-      fetch(window.location.href, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: { dummyValue: "True"}
-        });
+      async function updateHeader() {
+        const response = await fetch(window.location.href, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: {}
+          });  
+        if(response.ok) {
+          console.log("Got into response if")
+          const responseJSON = await response.json();
+          const entity = responseJSON.entity;
+          document.getElementById("entityHeader").innerHTML = entity.Name;
+        }
+      }
     </script>
   </body>
 </html>
