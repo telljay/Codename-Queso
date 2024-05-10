@@ -32,20 +32,17 @@
       }
     </style>
   </head>
-  <body onload="updateHeader()">
+  <body onload="loadPage()">
     <div class="container">
       <h1 id="entityHeader" innerHTML=""></h1>
-        <p onload="updateHeader();">
-          This is text.
+        <p id="infoPanel">
         </p>
       <!-- CURRENTLY BROKEN -->
       <!-- <img src = "../images/Cheese_slice.png" alt = "A slice of cheese" /> -->
     </div>
-
-    <div class="searchResults"></div>
             
     <script>
-      async function updateHeader() {
+      async function loadPage() {
         const response = await fetch(window.location.href, {
               method: "POST",
               headers: {
@@ -57,9 +54,190 @@
           console.log("Got into response if")
           const responseJSON = await response.json();
           const entity = responseJSON.entity;
+          console.log(window.location.href);
+          for(let i = 0; i < window.location.href.length; i++) {
+            if(window.location.href.substring(i,i+7) == "cheese/") {
+              loadCheese(entity);
+            } else if(window.location.href.substring(i,i+7) == "vendor/") {
+              loadVendor(entity);
+            } else if(window.location.href.substring(i,i+12) == "distributor/") {
+              loadDistributor(entity);
+            } else if(window.location.href.substring(i,i+9) == "supplier/") {
+              loadSupplier(entity);
+            } else if(window.location.href.substring(i,i+9) == "affineur/") {
+              loadAffineur(entity);
+            } else if(window.location.href.substring(i,i+12) == "cheesemaker/") {
+              loadCheesemaker(entity);
+            }
+          }
           document.getElementById("entityHeader").innerHTML = entity.Name;
         }
       }
+      
+      function loadCheese(entity) {
+        console.log("Got into loadCheese");
+        const infoPanel = document.getElementById("infoPanel");
+        const infoList = document.createElement("ul");
+        
+        const sharpness = document.createElement("div");
+        sharpness.innerHTML = "Sharpness: " + entity.Sharpness;
+        infoList.append(sharpness);
+        infoList.append(document.createElement("br"));
+
+        const age = document.createElement("div");
+        age.innerHTML = "Age: " + entity.Age;
+        infoList.append(age);
+        infoList.append(document.createElement("br"));
+
+        const lactose = document.createElement("div");
+        lactose.innerHTML = "Lactose: " + entity.Lactose;
+        infoList.append(lactose);
+        infoList.append(document.createElement("br"));
+
+        const description = document.createElement("div");
+        description.innerHTML = "Description: " + entity.Description;
+        infoList.append(description);
+        infoList.append(document.createElement("br"));
+
+        const cheeseFamily = document.createElement("div");
+        cheeseFamily.innerHTML = "Cheese Family: " + entity.CheeseFamily;
+        infoList.append(cheeseFamily);
+        infoList.append(document.createElement("br"));
+
+        infoPanel.append(infoList);
+
+        const vendorsList = document.createElement("ul");
+        for(let i = 0; i < entity.Vendors.length; i++) {
+          console.log(entity.Vendors[i].Name, entity.Vendors[i].Id);
+          const vendors = document.createElement("ul");
+          const singleVendor = document.createElement("button");
+          vendorId = `${entity.Vendors[i].Id}`
+          singleVendor.innerHTML = `${entity.Vendors[i].Name}`
+          singleVendor.setAttribute("id", entity.Vendors[i].Id);
+          singleVendor.addEventListener("click", async () => {
+            newUrl = "/search/vendor/" + singleVendor.getAttribute("id");
+            console.log(newUrl);
+            window.location.href = newUrl;
+            });
+          vendors.append(singleVendor);
+          vendorsList.append(vendors);
+        }
+        infoPanel.append(vendorsList);
+      }
+
+      function loadVendor(entity) {
+        console.log("Got into loadVendor");
+        const infoPanel = document.getElementById("infoPanel");
+        const infoList = document.createElement("ul");
+        
+        const address = document.createElement("div");
+        address.innerHTML = "Address: " + entity.AddressLine + " " + entity.City + ", " + entity.State + " " + entity.Zip + ", " + entity.Country;
+        infoList.append(address);
+
+        const openYear = document.createElement("div");
+        openYear.innerHTML = "Opened in: " + entity.OpenYear;
+        infoList.append(openYear);
+
+        const phoneNumber = document.createElement("div");
+        phoneNumber.innerHTML = "Phone Number: " + entity.PhoneNum;
+        infoList.append(phoneNumber);
+
+        const website = document.createElement("a");
+        website.innerHTML = "Website: " + entity.Website;
+        infoList.append(website);
+
+        infoPanel.append(infoList);
+      }
+
+      function loadDistributor(entity) {
+        console.log("Got into loadDistributor");
+        const infoPanel = document.getElementById("infoPanel");
+        const infoList = document.createElement("ul");
+         
+        const address = document.createElement("div");
+        address.innerHTML = "Main Address: " + entity.AddressLine + " " + entity.City + ", " + entity.State;
+        infoList.append(address);
+
+        const phoneNumber = document.createElement("div");
+        phoneNumber.innerHTML = "Phone Number: " + entity.PhoneNum;
+        infoList.append(phoneNumber);
+
+        const website = document.createElement("a");
+        website.innerHTML = "Website: " + entity.Website;
+        infoList.append(website);
+
+        const email = document.createElement("div");
+        email.innerHTML = "Email: " + entity.Email;
+
+        infoPanel.append(infoList);
+      }
+
+      function loadSupplier(entity) {
+        console.log("Got into loadSupplier");
+        const infoPanel = document.getElementById("infoPanel");
+        const infoList = document.createElement("ul");
+         
+        const address = document.createElement("div");
+        address.innerHTML = "Main Address: " + entity.AddressLine + " " + entity.City + ", " + entity.State + " " + entity.Zip;
+        infoList.append(address);
+
+        const phoneNumber = document.createElement("div");
+        phoneNumber.innerHTML = "Phone Number: " + entity.PhoneNum;
+        infoList.append(phoneNumber);
+
+        const website = document.createElement("a");
+        website.innerHTML = "Website: " + entity.Website;
+        infoList.append(website);
+
+        infoPanel.append(infoList);
+      }
+
+      function loadAffineur(entity) {
+        console.log("Got into loadAffineur");
+        const infoPanel = document.getElementById("infoPanel");
+        const infoList = document.createElement("ul");
+        
+        const address = document.createElement("div");
+        address.innerHTML = "Address: " + entity.AddressLine + " " + entity.City + ", " + entity.State + " " + entity.Zip + ", " + entity.Country;
+        infoList.append(address);
+
+        const phoneNumber = document.createElement("div");
+        phoneNumber.innerHTML = "Phone Number: " + entity.PhoneNum;
+        infoList.append(phoneNumber);
+
+        const website = document.createElement("a");
+        website.innerHTML = "Website: " + entity.Website;
+        infoList.append(website);
+
+        const email = document.createElement("div");
+        email.innerHTML = "Email: " + entity.Email;
+
+        infoPanel.append(infoList);
+      }
+
+      function loadCheesemaker(entity) {
+        console.log("Got into loadCheesemaker");
+        const infoPanel = document.getElementById("infoPanel");
+        const infoList = document.createElement("ul");
+        
+        const address = document.createElement("div");
+        address.innerHTML = "Address: " + entity.AddressLine + " " + entity.City + ", " + entity.State + " " + entity.Zip + ", " + entity.Country;
+        infoList.append(address);
+
+        const phoneNumber = document.createElement("div");
+        phoneNumber.innerHTML = "Phone Number: " + entity.PhoneNum;
+        infoList.append(phoneNumber);
+
+        const website = document.createElement("a");
+        website.innerHTML = "Website: " + entity.Website;
+        infoList.append(website);
+
+        const email = document.createElement("div");
+        email.innerHTML = "Email: " + entity.Email;
+
+        infoPanel.append(infoList);
+      }
+
     </script>
   </body>
 </html>
