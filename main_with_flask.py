@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def displayWelcomeMessage():
-    return f"Welcome. Welcome to Cheese."
+    return current_app.send_static_file('homePage.html')
 
 @app.route("/search")
 def searchLoad():
