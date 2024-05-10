@@ -36,7 +36,7 @@
     <div class="container">
       <h1>Cheese</h1>
       <!-- CURRENTLY BROKEN -->
-      <!-- <img src = "../images/Cheese_slice.png" alt = "A slice of cheese" /> -->
+      <!-- <img src="file://Cheese_slice.png" alt="A slice of cheese" /> -->
       <div id="cheeseSearch">
           <fieldset>
             Search For Cheese <input type="text" id="inputText" name="textInput" /> 
@@ -78,8 +78,6 @@
         for (const entry of data) {
           categoryButtonSelected = `${categoryButtonSelected}${entry[1]}\r`;
         }
-        // const log = document.querySelector("#log");
-        // log.innerText = categoryButtonSelected;
         event.preventDefault();
 
         const userSearch = {
@@ -94,22 +92,16 @@
             },
             body: JSON.stringify(userSearch)
         });
-        // console.log("Before the if")
         if(response.ok) {
-          // console.log("In the if")
           const responseJSON = await response.json();
           const results = responseJSON.results;
-          console.log("The button selected was:");
-          console.log(categoryButtonSelected);
-          console.log("The user's search was:");
-          console.log(userInput);
           if(results.length == 0) {
-            console.log("No results");
+            const searchResultsHolder = document.getElementById("searchResultsHolder");
+            const noResults = document.createElement("div");
+            noResults.innerHTML = "No results";
+            searchResultsHolder.append(noResults);
           } else {
-            // console.log( "Made it into the else");
             for(let i = 0; i < results.length; i++) {
-              console.log("Made it into for loop" + i);
-              console.log(results[i].Name, results[i].Id);
               const searchResultsHolder = document.getElementById("searchResultsHolder");
               const resultsList = document.createElement("ul");
               const resultsListItem = document.createElement("button");
@@ -126,41 +118,14 @@
                   categoryButtonSelected = `${categoryButtonSelected}${entry[1]}\r`;
                 }
                 newUrl = window.location.href + "/" + categoryButtonSelected + "/" + resultsListItem.getAttribute("id");
-                console.log(newUrl);
                 window.location.href = newUrl;
                 });
-              searchResultsHolder.append(resultsListItem);
-                  // TODO: Put results on different lines spaced out
-                  // searchResultsHolder.append("\n");
+              resultsList.append(resultsListItem);
+              searchResultsHolder.append(resultsList);
             }
           }
         }
       }
-
-      //CURRENTLY BROKEN
-      // $('searchResults').each(function(){
-      //   if($(this).text()=='') $(this).text('Results');
-      // });
-
-
-      // document.getElementById("cheeseSearch").addEventListener("click", async () => {
-      //       const firstName = document.getElementById("inputText").value;
-
-      //       const userSearch = {
-      //           userInput, inputText
-      //       };
-
-      //       const response = await fetch("/search", {
-      //           method: "POST",
-      //           headers: {
-      //               "Content-Type": "application/json",
-      //           },
-      //           body: JSON.stringify(userSearch) 
-      //       });
-      //       if(response.ok) {
-      //           // await loadLegends();
-      //       }
-      //   });
     </script>
   </body>
 </html>
